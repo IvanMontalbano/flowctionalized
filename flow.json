@@ -1,0 +1,23 @@
+{
+  "networks": {
+    "emulator": "127.0.0.1:3569",
+    "mainnet": "access.mainnet.nodes.onflow.org:9000",
+    "sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
+    "testnet": "access.devnet.nodes.onflow.org:9000"
+  },
+  "accounts": {
+    "emulator-account": {
+      "address": "f8d6e0586b0a20c7",
+      "key": "7fcf949069709f958f4f65098e63fa20e6fe468d028de1cd363e5e06db157b7d"
+    }
+  },
+  "contracts": {
+    "flowctionalized": "./src/flow/contracts/flowctionalized.cdc"
+  },
+
+  "deployments": {
+    "emulator": {
+      "emulator-account": ["flowctionalized"]
+    }
+  }
+}
