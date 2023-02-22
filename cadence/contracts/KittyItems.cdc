@@ -50,6 +50,7 @@ pub contract KittyItems: NonFungibleToken {
         pub case milkshake
         pub case tuktuk
         pub case skateboard
+        pub case shades
     }
 
     pub fun kindToString(_ kind: Kind): String {
@@ -64,6 +65,8 @@ pub contract KittyItems: NonFungibleToken {
                 return "Tuk-Tuk"
             case Kind.skateboard:
                 return "Skateboard"
+            case Kind.shades:
+                return "Shades"
         }
 
         return ""
@@ -473,3 +476,4 @@ pub contract KittyItems: NonFungibleToken {
         emit ContractInitialized()
     }
 }
+ 
