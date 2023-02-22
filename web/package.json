@@ -1,0 +1,50 @@
+{
+  "name": "kitty-items-web",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build && next export",
+    "start": "next start",
+    "test": "cypress run",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@analytics/google-analytics": "^0.5.3",
+    "@analytics/mixpanel": "^0.4.0",
+    "@analytics/router-utils": "^0.1.1",
+    "@headlessui/react": "^1.5.0",
+    "@onflow/fcl": "^1.2.0",
+    "@onflow/types": "^1.0.2",
+    "@onflow/util-actor": "^0.0.2",
+    "@onflow/util-invariant": "^1.0.2",
+    "@onflow/util-uid": "^0.0.1",
+    "@sentry/nextjs": "^7.7.0",
+    "analytics": "^0.8.0",
+    "api": "^4.2.0",
+    "autoprefixer": "^10.4.2",
+    "better-sqlite3": "^7.5.0",
+    "knex": "^1.0.2",
+    "next": "^12.1.0",
+    "postcss": "^8.4.8",
+    "prop-types": "^15.7.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-router-dom": "^5.3.0",
+    "swr": "^1.0.1",
+    "tailwindcss": "^3.0.23",
+    "use-debounce": "^7.0.0"
+  },
+  "devDependencies": {
+    "@jjordy/swr-devtools": "^2.0.7",
+    "@next/swc-darwin-arm64": "^13.1.6",
+    "cypress": "^8.5.0",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.26.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.4.1"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "accounts": {
+    "testnet-account": {
+      "address": "${ADMIN_ADDRESS}",
+      "keys": "${FLOW_PRIVATE_KEY}"
+    }
+  },
+  "deployments": {
+    "testnet": {
+      "testnet-account": [
+        "KittyItems"
+      ]
+    }
+  }
+}
