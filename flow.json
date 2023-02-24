@@ -45,7 +45,8 @@
         "emulator": "0x0ae53cb6e3f42a79",
         "testnet": "0x7e60df042a9c0868"
       }
-    }
+    },
+    "FlowTokenFictitious": "./cadence/contracts/FlowTokenFictitious.cdc"
   },
   "networks": {
     "emulator": "127.0.0.1:3569",
@@ -59,7 +60,13 @@
   },
   "deployments": {
     "emulator": {
-      "emulator-account": ["KittyItems", "NFTStorefrontV2", "NonFungibleToken", "MetadataViews"]
+      "emulator-account": [
+        "KittyItems",
+        "NFTStorefrontV2",
+        "NonFungibleToken",
+        "MetadataViews",
+        "FlowTokenFictitious"
+      ]
     }
   }
 }
