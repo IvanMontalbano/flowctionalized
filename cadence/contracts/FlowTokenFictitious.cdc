@@ -5,6 +5,18 @@ pub contract FlowTokenFictitious: FungibleToken {
     // Total supply of Flow tokens in existence
     pub var totalSupply: UFix64
 
+    // Defines token vault storage path
+    pub let TokenStoragePath: StoragePath
+
+    // Defines token vault public balance path
+    pub let TokenPublicBalancePath: PublicPath
+
+    // Defines token vault public receiver path
+    pub let TokenPublicReceiverPath: PublicPath
+
+    // Defines token minter storage path
+    pub let TokenMinterStoragePath: StoragePath
+
     // Dictionary to keep track of tokens and their NFT of origin
     pub var fractionsBalance: @{UInt64: Vault}
 
@@ -131,7 +143,7 @@ pub contract FlowTokenFictitious: FungibleToken {
         // Function that mints new tokens, adds them to the total supply,
         // and returns them to the calling context.
         //
-        pub fun mintTokens(amount: UFix64, NFTid: UInt64): @FlowTokenFictitious.Vault {
+        pub fun mintTokens(amount: UFix64): @FlowTokenFictitious.Vault {
             pre {
                 amount > UFix64(0): "Amount minted must be greater than zero"
                 amount <= self.allowedAmount: "Amount minted must be less than the allowed amount"
@@ -168,33 +180,38 @@ pub contract FlowTokenFictitious: FungibleToken {
         }
     }
 
-    init(adminAccount: AuthAccount) {
+    init() {
         self.totalSupply = 0.0
         self.fractionsBalance <- {}
+
+        self.TokenStoragePath = /storage/flowTokenFictitiousVault
+        self.TokenPublicReceiverPath = /public/flowTokenFictitiousReceiver
+        self.TokenPublicBalancePath = /public/flowTokenFictitiousBalance
+        self.TokenMinterStoragePath = /storage/flowTokenFictitiousMinter
 
         // Create the Vault with the total supply of tokens and save it in storage
         //
         let vault <- create Vault(balance: self.totalSupply)
-        adminAccount.save(<-vault, to: /storage/flowTokenFictitiousVault)
+        self.account.save(<-vault, to: self.TokenStoragePath)
 
         // Create a public capability to the stored Vault that only exposes
         // the `deposit` method through the `Receiver` interface
         //
-        adminAccount.link<&FlowTokenFictitious.Vault{FungibleToken.Receiver}>(
-            /public/flowTokenFictitiousReceiver,
-            target: /storage/flowTokenFictitiousVault
+        self.account.link<&FlowTokenFictitious.Vault{FungibleToken.Receiver}>(
+            self.TokenPublicReceiverPath,
+            target: self.TokenStoragePath
         )
 
         // Create a public capability to the stored Vault that only exposes
         // the `balance` field through the `Balance` interface
         //
-        adminAccount.link<&FlowTokenFictitious.Vault{FungibleToken.Balance}>(
-            /public/flowTokenFictitiousBalance,
-            target: /storage/flowTokenFictitiousVault
+        self.account.link<&FlowTokenFictitious.Vault{FungibleToken.Balance}>(
+            self.TokenPublicBalancePath,
+            target: self.TokenStoragePath
         )
 
         let admin <- create Administrator()
-        adminAccount.save(<-admin, to: /storage/flowTokenFictitiousAdmin)
+        self.account.save(<-admin, to: /storage/flowTokenFictitiousAdmin)
 
         // Emit an event that shows that the contract was initialized
         emit TokensInitialized(initialSupply: self.totalSupply)

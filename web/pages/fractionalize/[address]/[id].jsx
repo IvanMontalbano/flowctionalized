@@ -12,6 +12,7 @@ import useItemTransfer from "src/hooks/useItemTransfer"
 import useTokenFictitiousMint from "src/hooks/useTokenFictitiousMint"
 import useAppContext from "src/hooks/useAppContext"
 import AccountItemNotFoundMessage from "src/components/AccountItemNotFoundMessage"
+import TransactionLoading from "../../../../web/src/components/TransactionLoading"
 
 export default function KittyItem() {
   const router = useRouter()
