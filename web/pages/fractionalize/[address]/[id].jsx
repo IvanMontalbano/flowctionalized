@@ -9,7 +9,9 @@ import SellListItem from "src/components/SellListItem"
 import useAccountItem from "src/hooks/useAccountItem"
 import useApiListing from "src/hooks/useApiListing"
 import useItemTransfer from "src/hooks/useItemTransfer"
+import useTokensTransfer from "src/hooks/useTokensTransfer"
 import useTokenFictitiousMint from "src/hooks/useTokenFictitiousMint"
+import useSetUpVault from "src/hooks/useSetUpVault"
 import useAppContext from "src/hooks/useAppContext"
 import AccountItemNotFoundMessage from "src/components/AccountItemNotFoundMessage"
 import TransactionLoading from "../../../../web/src/components/TransactionLoading"
@@ -21,19 +23,29 @@ export default function KittyItem() {
   const {listing} = useApiListing(id)
   const [transfer, transferTx] = useItemTransfer(id)
   const [mint, mintTx] = useTokenFictitiousMint(id)
+  const [transferTokens, transferTokensTx] = useTokensTransfer(id)
+  const [setUpVault, setUpVaultTx] = useSetUpVault(id)
   const {item} = useAccountItem(address, id, listing)
   const currentUserIsOwner =
     currentUser && item?.owner && item.owner === currentUser?.addr
   const isSellable = currentUserIsOwner && !listing
 
-  const onSendNFT = () => {
+  const onFractionalizeNFT = () => {
     console.log("itemID => ", item)
-    transfer(item.itemID, item.name, "0xf8d6e0586b0a20c7")
-  }
+    setUpVault("0x179b6b1cb6755e31").then(vault => {
+      console.log("vault => ", vault, setUpVaultTx)
 
-  const onMintToken = () => {
-    console.log("itemID => ", item)
-    mint("0xf8d6e0586b0a20c7", 100)
+      transfer(item.itemID, item.name, "0xf8d6e0586b0a20c7").then(res => {
+        console.log("transferTx => ", transferTx, res)
+
+        mint("0xf8d6e0586b0a20c7", 100.1).then(ult => {
+          console.log("mintTx => ", mintTx, ult)
+
+          transferTokens(100.1, "0x179b6b1cb6755e31")
+          console.log("transferTokensTx => ", transferTokensTx)
+        })
+      })
+    })
   }
 
   return (
@@ -161,22 +173,11 @@ export default function KittyItem() {
                           <TransactionLoading status={transferTx.status} />
                         ) : (
                           <button
-                            onClick={onSendNFT}
+                            onClick={onFractionalizeNFT}
                             class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                             type="button"
                           >
-                            TRANSFER NFT
-                          </button>
-                        )}
-                        {!!mintTx ? (
-                          <TransactionLoading status={mintTx.status} />
-                        ) : (
-                          <button
-                            onClick={onMintToken}
-                            class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                            type="button"
-                          >
-                            MINT TOKEN
+                            FRACTIONALIZE NFT
                           </button>
                         )}
                       </div>

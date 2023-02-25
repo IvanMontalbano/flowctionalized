@@ -1,5 +1,5 @@
 import * as fcl from "@onflow/fcl"
-import MINT_TOKEN_TRANSACTION from "cadence/transactions/mint_tokens.cdc"
+import TRANSFER_TOKENS_TRANSACTION from "cadence/transactions/transfer_fictitious_tokens.cdc"
 import {useRouter} from "next/dist/client/router"
 import {useEffect, useState} from "react"
 import useTransactionsContext from "src/components/Transactions/useTransactionsContext"
@@ -9,7 +9,7 @@ import {useSWRConfig} from "swr"
 import useAppContext from "./useAppContext"
 import analytics from "src/global/analytics"
 
-export default function useTokenFictitiousMint(itemID) {
+export default function useTokensTransfer(itemID) {
   const router = useRouter()
   const {currentUser} = useAppContext()
   const {addTransaction, transactionsById} = useTransactionsContext()
@@ -17,23 +17,21 @@ export default function useTokenFictitiousMint(itemID) {
   const [txId, setTxId] = useState()
   const tx = transactionsById[txId]?.data
 
-  const mint = async (recipient, amount) => {
-    if (!recipient) throw new Error("Missing recipient")
+  const transferTokens = async (amount, recipient) => {
     if (!amount) throw new Error("Missing amount")
-    console.log(amount);
-
+    if (!recipient) throw new Error("Missing recipient")
     const newTxId = await fcl.mutate({
-      cadence: MINT_TOKEN_TRANSACTION,
+      cadence: TRANSFER_TOKENS_TRANSACTION,
       args: (arg, t) => [
-        arg(recipient, t.Address),
         arg(amount.toString(), t.UFix64),
+        arg(recipient, t.Address),
       ],
       limit: 1000,
     })
     setTxId(newTxId)
     addTransaction({
       id: newTxId,
-      title: `Mint ${amount} fictitious tokens and sent to ${recipient}`,
+      title: `Transfered #${amount} to ${recipient}`,
     })
   }
 
@@ -48,5 +46,5 @@ export default function useTokenFictitiousMint(itemID) {
     }
   }, [cache, currentUser, itemID, mutate, router, tx])
 
-  return [mint, tx]
+  return [transferTokens, tx]
 }

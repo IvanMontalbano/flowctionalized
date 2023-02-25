@@ -48,7 +48,11 @@ export default function Header() {
               <div className="mr-2 md:mr-4">
                 <HeaderLink href={paths.root}>Store</HeaderLink>
                 <HeaderLink href={paths.marketplace}>Marketplace</HeaderLink>
-                {currentUser ? (<HeaderLink href={paths.fractionalize(currentUser.addr)}>Fractionalize</HeaderLink>) : null }
+                {currentUser ? (
+                  <HeaderLink href={paths.fractionalize(currentUser.addr)}>
+                    Fractionalize
+                  </HeaderLink>
+                ) : null}
               </div>
               {!!currentUser && (
                 <div className="hidden mr-2 md:flex">

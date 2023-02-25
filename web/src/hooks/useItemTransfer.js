@@ -18,7 +18,7 @@ export default function useItemTransfer(itemID) {
   const tx = transactionsById[txId]?.data
 
   const transfer = async (withdrawID, itemName, recipient) => {
-    if (!withdrawID) throw new Error("Missing withdrawID")
+    if (withdrawID === undefined) throw new Error("Missing withdrawID")
     if (!recipient) throw new Error("Missing recipient")
 
     const newTxId = await fcl.mutate({

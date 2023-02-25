@@ -6,6 +6,7 @@ import Avatar from "src/components/Avatar"
 import PageTitle from "src/components/PageTitle"
 import ProfileAccountItems from "src/components/ProfileAccountItems"
 import ProfileListings from "src/components/ProfileListings"
+import TokensListings from "src/components/TokensListings"
 import ProfileQuestionPopover from "src/components/ProfileQuestionPopover"
 import {CHAIN_ENV_TESTNET, paths} from "src/global/constants"
 import publicConfig from "src/global/publicConfig"
@@ -18,6 +19,7 @@ const getTabClasses = selected =>
 export default function Profile() {
   const router = useRouter()
   const {address} = router.query
+  //const [fictitiousBalance, fictitiousBalanceTx] = use()
 
   return (
     <div className="main-container pt-12 pb-24" data-cy="profile">
@@ -57,6 +59,11 @@ export default function Profile() {
                 </button>
               )}
             </Tab>
+            <Tab as={Fragment}>
+              {({selected}) => (
+                <button className={getTabClasses(selected)}>Tokens</button>
+              )}
+            </Tab>
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
@@ -64,6 +71,9 @@ export default function Profile() {
             </Tab.Panel>
             <Tab.Panel>
               <ProfileListings address={address} />
+            </Tab.Panel>
+            <Tab.Panel>
+              <TokensListings />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
