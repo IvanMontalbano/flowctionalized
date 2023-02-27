@@ -147,7 +147,7 @@ export default function Marketplace() {
             <Tab as={Fragment}>
               {({selected}) => (
                 <button className={getTabClasses(selected)}>
-                  Fractionalized Items
+                  Fractionalized Items - WIP
                 </button>
               )}
             </Tab>

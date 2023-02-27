@@ -4,7 +4,7 @@ import Button from "./Button"
 import Dialog from "./Dialog"
 import TextInput from "./TextInput"
 
-const PUBLIC_PASSWORD = "KittyItems"
+const PUBLIC_PASSWORD = "Flowctionalize"
 
 export const LOGGED_IN_ADMIN_ADDRESS_KEY = "kitty_items_logged_in_admin_address"
 
@@ -38,15 +38,15 @@ export default function AdminLogInDialog() {
   return (
     <div>
       <Dialog
-        title="Kitty Items"
+        title="Flowctionalize"
         isOpen={showAdminLoginDialog}
         close={closeDialog}
       >
         <h1 className="text-3xl text-gray-darkest text-center mb-2">
-          Kitty Items Admin
+        Flowctionalize Admin
         </h1>
         <div className="text-center text-gray text-md mb-8">
-          Enter administrator password (PSST... KittyItems)
+          Enter administrator password (PSST... Flowctionalize)
         </div>
         <form onSubmit={onSubmit}>
           <div className="mb-4">
@@ -59,7 +59,7 @@ export default function AdminLogInDialog() {
               onChange={setPassword}
             />
             <div className="text-red mt-2 text-sm">
-              {passwordError && `That's an incorrect password. Try KittyItems.`}
+              {passwordError && `That's an incorrect password. Try Flowctionalize.`}
             </div>
           </div>
 

@@ -22,10 +22,10 @@ export default function TokensListings() {
       import FungibleToken from 0xFungibleToken
       import FlowTokenFictitious from 0xf8d6e0586b0a20c7
       pub fun main(account: Address): UFix64 {
-          let vaultRef = getAccount(account).getCapability(FlowTokenFictitious.TokenPublicBalancePath)
-                          .borrow<&FlowTokenFictitious.Vault{FungibleToken.Balance}>()
-                          ?? panic("Could not borrow Balance reference to the Vault")
+        if let vaultRef = getAccount(account).getCapability(/public/flowTokenFictitiousBalance)!.borrow<&FlowTokenFictitious.Vault{FungibleToken.Balance}>() {
           return vaultRef.balance
+        }
+        return 0.0
       }
       `,
       args: (arg, t) => [arg(currentUser?.addr, t.Address)],

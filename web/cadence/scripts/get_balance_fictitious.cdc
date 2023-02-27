@@ -6,12 +6,9 @@
 import FungibleToken from 0xFungibleToken
 import FlowTokenFictitious from 0xf8d6e0586b0a20c7
 
-pub fun main(address: Address): UFix64 {
-    let account = getAccount(address)
-
-    let vaultRef = account.getCapability(/public/flowTokenFictitiousBalance)!
-        .borrow<&FlowTokenFictitious.Vault{FungibleToken.Balance}>()
-        ?? panic("Could not borrow reference to the vault balance")
-
-    return vaultRef.balance
+pub fun main(account: Address): UFix64 {
+    if let vaultRef = getAccount(account).getCapability(/public/flowTokenFictitiousBalance)!.borrow<&FlowTokenFictitious.Vault{FungibleToken.Balance}>() {
+        return vaultRef.balance
+    }
+    return 0.0
 }

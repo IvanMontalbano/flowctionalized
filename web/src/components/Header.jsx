@@ -34,10 +34,10 @@ export default function Header() {
             </div>
             <div className="ml-2 d-flex flex-column">
               <div className="text-sm font-bold sm:text-2xl lg:text-3xl sm:ml-3 text-gray-darkest">
-                Kitty Items
+                Flowctionalize
               </div>
               <div className="text-sm sm:ml-3 text-gray-darkest">
-                CryptoKitties Sample App
+                Fractionalized CryptoKitties Sample App
               </div>
             </div>
           </a>

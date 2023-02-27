@@ -16,6 +16,8 @@ import useSetUpVault from "src/hooks/useSetUpVault"
 import useAppContext from "src/hooks/useAppContext"
 import AccountItemNotFoundMessage from "src/components/AccountItemNotFoundMessage"
 import TransactionLoading from "../../../../web/src/components/TransactionLoading"
+import { useState } from "react";
+import { UFix64 } from "@onflow/types"
 
 export default function KittyItem() {
   const router = useRouter()
@@ -23,6 +25,7 @@ export default function KittyItem() {
   const {address, id} = router.query
   const {listing} = useApiListing(id)
   const [fractionalize, fractionalizeTx] = useFractionalize(id)
+  const [quantity, setQty] = useState(0)
   //const [mint, mintTx] = useTokenFictitiousMint(id)
   //const [transferTokens, transferTokensTx] = useTokensTransfer(id)
   const [setUpVault, setUpVaultTx] = useSetUpVault(id)
@@ -32,11 +35,11 @@ export default function KittyItem() {
   const isSellable = currentUserIsOwner && !listing
 
   const onFractionalizeNFT = () => {
-    console.log("itemID => ", item)
+    console.log("itemID & Qty => ", item, Number(parseFloat(quantity).toFixed(1)))
     setUpVault().then(vault => {
       console.log("vault => ", vault, setUpVaultTx)
 
-      fractionalize(item.itemID, item.name, 100.1).then(res => {
+      fractionalize(item.itemID, item.name, Number(parseFloat(quantity).toFixed(1))).then(res => {
         console.log("transferTx => ", fractionalizeTx, res)
       })
     })
@@ -108,42 +111,6 @@ export default function KittyItem() {
                           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
                           for="inline-full-name"
                         >
-                          Token Name
-                        </label>
-                      </div>
-                      <div class="md:w-2/3">
-                        <input
-                          class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                          id="inline-full-name"
-                          type="text"
-                          placeholder="My Token"
-                        />
-                      </div>
-                    </div>
-                    <div class="md:flex md:items-center mb-6">
-                      <div class="md:w-1/3">
-                        <label
-                          class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-full-name"
-                        >
-                          Token Ticker
-                        </label>
-                      </div>
-                      <div class="md:w-2/3">
-                        <input
-                          class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                          id="inline-full-name"
-                          type="text"
-                          placeholder="MTKN"
-                        />
-                      </div>
-                    </div>
-                    <div class="md:flex md:items-center mb-6">
-                      <div class="md:w-1/3">
-                        <label
-                          class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-full-name"
-                        >
                           Token Quantity
                         </label>
                       </div>
@@ -152,25 +119,8 @@ export default function KittyItem() {
                           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                           id="inline-full-name"
                           type="text"
-                          placeholder="1000"
-                        />
-                      </div>
-                    </div>
-                    <div class="md:flex md:items-center mb-6">
-                      <div class="md:w-1/3">
-                        <label
-                          class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-full-name"
-                        >
-                          Fixed Price (USDC)
-                        </label>
-                      </div>
-                      <div class="md:w-2/3">
-                        <input
-                          class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                          id="inline-full-name"
-                          type="text"
-                          placeholder="100"
+                          placeholder="100.5"
+                          onChange={(e) => {e.target.value.includes(".") ? setQty(e.target.value) : setQty(e.target.value+".1")}}
                         />
                       </div>
                     </div>

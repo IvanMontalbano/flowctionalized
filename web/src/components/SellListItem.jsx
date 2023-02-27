@@ -49,7 +49,7 @@ export default function SellListItem({item}) {
               roundedFull={true}
               className="mt-5"
             >
-              List My Kitty Kitem
+              List My Item
             </Button>
           </form>
         </div>

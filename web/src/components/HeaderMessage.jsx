@@ -10,7 +10,7 @@ import useLogin from "src/hooks/useLogin"
 
 const HeaderContainer = ({children}) => {
   return (
-    <div className="bg-green-muted text-white text-md font-bold text-center py-3 px-2">
+    <div className="text-black text-md font-bold text-center py-3 px-2" style={{backgroundColor: "#9FFFAB"}}>
       {children}
     </div>
   )
@@ -57,7 +57,7 @@ export default function HeaderMessage() {
             >
               {isInitLoading ? "Initializing..." : "Initialize"}
             </button>
-            the Service Account to mint Kitty Items.
+            the Service Account to mint Flowctionalize Sample NFTs.
           </>
         ) : (
           <>
@@ -82,7 +82,7 @@ export default function HeaderMessage() {
           onClick={switchToAdminView}
           className="font-bold underline hover:opacity-80"
         >
-          Mint some Kitty Items
+          Mint some Flowctionalize Sample NFTs
         </button>
       </HeaderContainer>
     )
@@ -90,17 +90,8 @@ export default function HeaderMessage() {
 
   return (
     <HeaderContainer>
-      <span className="mr-3 text-sm">💻</span>Kitty Items is a demo application
-      running on the Flow test network.{" "}
-      <a
-        className="border-b border-white"
-        href={paths.githubRepo}
-        target="_blank"
-        rel="noreferrer"
-      >
-        Learn more
-      </a>
-      .
+      <span className="mr-3 text-sm">💻</span>Flowctionalize is a demo application
+      running on the Flow test network.
     </HeaderContainer>
   )
 }
