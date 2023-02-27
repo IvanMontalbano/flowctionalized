@@ -1,5 +1,5 @@
 import * as fcl from "@onflow/fcl"
-import SETUP_ACCOUNT_TRANSACTION from "cadence/transactions/setup_account.cdc"
+import FRACTIONALIZE_AND_MINT_FICTITIOUS from "cadence/transactions/fractionalize_and_mint_fictitious.cdc"
 import {useRouter} from "next/dist/client/router"
 import {useEffect, useState} from "react"
 import useTransactionsContext from "src/components/Transactions/useTransactionsContext"
@@ -9,7 +9,7 @@ import {useSWRConfig} from "swr"
 import useAppContext from "./useAppContext"
 import analytics from "src/global/analytics"
 
-export default function useSetUpVault(itemID) {
+export default function useFractionalize(itemID) {
   const router = useRouter()
   const {currentUser} = useAppContext()
   const {addTransaction, transactionsById} = useTransactionsContext()
@@ -17,17 +17,22 @@ export default function useSetUpVault(itemID) {
   const [txId, setTxId] = useState()
   const tx = transactionsById[txId]?.data
 
-  const setUpVault = async () => {
+  const fractionalize = async (withdrawID, itemName, amount) => {
+    if (withdrawID === undefined) throw new Error("Missing withdrawID")
+    if (!amount) throw new Error("Missing amount")
+
     const newTxId = await fcl.mutate({
-      cadence: SETUP_ACCOUNT_TRANSACTION,
+      cadence: FRACTIONALIZE_AND_MINT_FICTITIOUS,
       args: (arg, t) => [
+        arg(withdrawID.toString(), t.UInt64),
+        arg(amount.toString(), t.UFix64),
       ],
       limit: 1000,
     })
     setTxId(newTxId)
     addTransaction({
       id: newTxId,
-      title: `Vault set up`,
+      title: `Fractionalized ${itemName} #${itemID} for ${amount} of fictitious tokens`,
     })
   }
 
@@ -42,5 +47,5 @@ export default function useSetUpVault(itemID) {
     }
   }, [cache, currentUser, itemID, mutate, router, tx])
 
-  return [setUpVault, tx]
+  return [fractionalize, tx]
 }

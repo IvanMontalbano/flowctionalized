@@ -8,9 +8,10 @@ import RarityScale from "src/components/RarityScale"
 import SellListItem from "src/components/SellListItem"
 import useAccountItem from "src/hooks/useAccountItem"
 import useApiListing from "src/hooks/useApiListing"
-import useItemTransfer from "src/hooks/useItemTransfer"
-import useTokensTransfer from "src/hooks/useTokensTransfer"
-import useTokenFictitiousMint from "src/hooks/useTokenFictitiousMint"
+import useFractionalize from "src/hooks/useFractionalize"
+//import useItemTransfer from "src/hooks/useItemTransfer"
+//import useTokensTransfer from "src/hooks/useTokensTransfer"
+//import useTokenFictitiousMint from "src/hooks/useTokenFictitiousMint"
 import useSetUpVault from "src/hooks/useSetUpVault"
 import useAppContext from "src/hooks/useAppContext"
 import AccountItemNotFoundMessage from "src/components/AccountItemNotFoundMessage"
@@ -21,9 +22,9 @@ export default function KittyItem() {
   const {currentUser} = useAppContext()
   const {address, id} = router.query
   const {listing} = useApiListing(id)
-  const [transfer, transferTx] = useItemTransfer(id)
-  const [mint, mintTx] = useTokenFictitiousMint(id)
-  const [transferTokens, transferTokensTx] = useTokensTransfer(id)
+  const [fractionalize, fractionalizeTx] = useFractionalize(id)
+  //const [mint, mintTx] = useTokenFictitiousMint(id)
+  //const [transferTokens, transferTokensTx] = useTokensTransfer(id)
   const [setUpVault, setUpVaultTx] = useSetUpVault(id)
   const {item} = useAccountItem(address, id, listing)
   const currentUserIsOwner =
@@ -32,7 +33,14 @@ export default function KittyItem() {
 
   const onFractionalizeNFT = () => {
     console.log("itemID => ", item)
-    setUpVault("0x179b6b1cb6755e31").then(vault => {
+    setUpVault().then(vault => {
+      console.log("vault => ", vault, setUpVaultTx)
+
+      fractionalize(item.itemID, item.name, 100.1).then(res => {
+        console.log("transferTx => ", fractionalizeTx, res)
+      })
+    })
+    /*setUpVault("0x179b6b1cb6755e31").then(vault => {
       console.log("vault => ", vault, setUpVaultTx)
 
       transfer(item.itemID, item.name, "0xf8d6e0586b0a20c7").then(res => {
@@ -45,7 +53,7 @@ export default function KittyItem() {
           console.log("transferTokensTx => ", transferTokensTx)
         })
       })
-    })
+    })*/
   }
 
   return (
@@ -169,8 +177,8 @@ export default function KittyItem() {
                     <div class="md:flex md:items-center">
                       <div class="md:w-1/3"></div>
                       <div class="md:w-2/3">
-                        {!!transferTx ? (
-                          <TransactionLoading status={transferTx.status} />
+                        {!!fractionalizeTx ? (
+                          <TransactionLoading status={fractionalizeTx.status} />
                         ) : (
                           <button
                             onClick={onFractionalizeNFT}

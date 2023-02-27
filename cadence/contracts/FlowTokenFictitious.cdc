@@ -1,4 +1,6 @@
 import FungibleToken from "./FungibleToken.cdc"
+import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
+import KittyItems from "./KittyItems.cdc"
 
 pub contract FlowTokenFictitious: FungibleToken {
 
@@ -138,20 +140,33 @@ pub contract FlowTokenFictitious: FungibleToken {
         // the amount of tokens that the minter is allowed to mint
         pub var allowedAmount: UFix64
 
-        // mintTokens
+        // fractionalizeNFT
         //
-        // Function that mints new tokens, adds them to the total supply,
-        // and returns them to the calling context.
+        // Function that trasnfer a NFT to the contract owner, mints new tokens, adds them to the total supply, and transfer them to the caller vault.
         //
-        pub fun mintTokens(amount: UFix64): @FlowTokenFictitious.Vault {
+        pub fun fractionalizeNFT(amount: UFix64, nft: @NonFungibleToken.NFT, recipientRef: &{FungibleToken.Receiver})/*: @FlowTokenFictitious.Vault*/ {
             pre {
                 amount > UFix64(0): "Amount minted must be greater than zero"
                 amount <= self.allowedAmount: "Amount minted must be less than the allowed amount"
+                nft != nil: "NFT must exist"
+                recipientRef != nil: "Valid capability to user's vault who want to fractionalize a NFT"
             }
+            let receiver = getAccount(FlowTokenFictitious.account.address)
+
+            let collectionCapability = receiver.getCapability(KittyItems.CollectionPublicPath)!.borrow<&{NonFungibleToken.CollectionPublic}>() ?? panic("[Collection] Could not borrow a receiver reference to the colleciton")
+            collectionCapability.deposit(token: <- nft);
+
             FlowTokenFictitious.totalSupply = FlowTokenFictitious.totalSupply + amount
             self.allowedAmount = self.allowedAmount - amount
             emit TokensMinted(amount: amount)
-            return <-create Vault(balance: amount)
+            
+            //let recipientRef = recipientTokens.borrow() ?? panic("[Vault] Could not borrow a receiver reference to the vault")
+            recipientRef.deposit(from: <-create Vault(balance: amount))
+            //self.account.save(<-nft, to: /storage/kittyItemsCollectionV14/id)
+            /*FlowTokenFictitious.totalSupply = FlowTokenFictitious.totalSupply + amount
+            self.allowedAmount = self.allowedAmount - amount
+            emit TokensMinted(amount: amount)*/
+            //return <-create Vault(balance: amount)
         }
 
         init(allowedAmount: UFix64) {
@@ -210,10 +225,19 @@ pub contract FlowTokenFictitious: FungibleToken {
             target: self.TokenStoragePath
         )
 
+        // Create the Administrator resource
         let admin <- create Administrator()
         self.account.save(<-admin, to: /storage/flowTokenFictitiousAdmin)
+
+        // Create a public capability to the stored Minter that only allows to mint new tokens provided
+        // that a NFT is transferred
+        self.account.link<&FlowTokenFictitious.Administrator>(
+            /public/flowTokenFictitiousAdmin,
+            target: /storage/flowTokenFictitiousAdmin
+        )
 
         // Emit an event that shows that the contract was initialized
         emit TokensInitialized(initialSupply: self.totalSupply)
     }
 }
+ 

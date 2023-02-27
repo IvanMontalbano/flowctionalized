@@ -28,3 +28,4 @@ transaction(amount: UFix64, recipient: Address) {
         receiverRef.deposit(from: <-self.sentVault)
     }
 }
+ 

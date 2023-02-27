@@ -1,6 +1,5 @@
 import FungibleToken from 0xFungibleToken
 import FlowTokenFictitious from 0xf8d6e0586b0a20c7
-
 // This transaction configures an account to hold Kitty Items.
 
 transaction {
