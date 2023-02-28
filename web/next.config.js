@@ -6,21 +6,20 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 
 const moduleExports = {
-  // Your existing module.exports
-
-  sentry: {
-    // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
-    // for client-side builds. (This will be the default starting in
-    // `@sentry/nextjs` version 8.0.0.) See
-    // https://webpack.js.org/configuration/devtool/ and
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
-    // for more information.
-    hideSourceMaps: true,
-  },
+  reactStrictMode: true,
+  trailingSlash: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
+  },
+  productionBrowserSourceMaps: true,
+  webpack: (config, _options) => {
+    config.module.rules.push({
+      test: /\.cdc/,
+      type: "asset/source",
+    })
+    return config
   },
 };
 
