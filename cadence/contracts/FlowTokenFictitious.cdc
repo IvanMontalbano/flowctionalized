@@ -20,7 +20,7 @@ pub contract FlowTokenFictitious: FungibleToken {
     pub let TokenMinterStoragePath: StoragePath
 
     // Dictionary to keep track of tokens and their NFT of origin
-    pub var fractionsBalance: {UInt64: UFix64}
+    //pub var fractionsBalance: {UInt64: UFix64}
 
     // Event that is emitted when the contract is created
     pub event TokensInitialized(initialSupply: UFix64)
@@ -165,7 +165,7 @@ pub contract FlowTokenFictitious: FungibleToken {
             
             //let recipientRef = recipientTokens.borrow() ?? panic("[Vault] Could not borrow a receiver reference to the vault")
             recipientRef.deposit(from: <-create Vault(balance: amount))
-            FlowTokenFictitious.fractionsBalance[nftId] = amount
+            //FlowTokenFictitious.fractionsBalance[nftId] = amount
             //self.account.save(<-nft, to: /storage/kittyItemsCollectionV14/id)
             /*FlowTokenFictitious.totalSupply = FlowTokenFictitious.totalSupply + amount
             self.allowedAmount = self.allowedAmount - amount
@@ -201,7 +201,7 @@ pub contract FlowTokenFictitious: FungibleToken {
 
     init() {
         self.totalSupply = 0.0
-        self.fractionsBalance = {}
+        //self.fractionsBalance = {}
 
         self.TokenStoragePath = /storage/flowTokenFictitiousVault
         self.TokenPublicReceiverPath = /public/flowTokenFictitiousReceiver
