@@ -19,8 +19,8 @@ export default function TokensListings() {
   async function getBalance() {
     const result = await fcl.query({
       cadence: `
-      import FungibleToken from 0xFungibleToken
-      import FlowTokenFictitious from 0xf8d6e0586b0a20c7
+      import FungibleToken from 0x9a0766d93b6608b7
+      import FlowTokenFictitious from 0x1e66c93eb4679497
       pub fun main(account: Address): UFix64 {
         if let vaultRef = getAccount(account).getCapability(/public/flowTokenFictitiousBalance)!.borrow<&FlowTokenFictitious.Vault{FungibleToken.Balance}>() {
           return vaultRef.balance

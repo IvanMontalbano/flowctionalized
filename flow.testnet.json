@@ -1,15 +1,22 @@
 {
   "accounts": {
     "testnet-account": {
-      "address": "${ADMIN_ADDRESS}",
-      "keys": "${FLOW_PRIVATE_KEY}"
+      "address": "1e66c93eb4679497",
+      "key": {
+        "type": "hex",
+        "index": 0,
+        "signatureAlgorithm": "ECDSA_P256",
+        "hashAlgorithm": "SHA3_256",
+        "privateKey": "92767d31992cc38547cb41c696ed621dbaa56124409cf324629d1d13627739c7"
+      }
     }
   },
   "deployments": {
     "testnet": {
-      "testnet-account": [
-        "KittyItems"
-      ]
+        "testnet-account": [
+            "KittyItems",
+            "FlowTokenFictitious"
+        ]
     }
   }
 }

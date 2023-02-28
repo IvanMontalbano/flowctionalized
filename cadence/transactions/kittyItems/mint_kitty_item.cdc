@@ -1,7 +1,7 @@
 import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
 import KittyItems from "../../contracts/KittyItems.cdc"
-import MetadataViews from "../contracts/MetadataViews.cdc"
-import FungibleToken from "./utility/FungibleToken.cdc"
+import MetadataViews from "../../contracts/MetadataViews.cdc"
+import FungibleToken from "../../contracts/FungibleToken.cdc"
 
 // This transction uses the NFTMinter resource to mint a new NFT.
 //

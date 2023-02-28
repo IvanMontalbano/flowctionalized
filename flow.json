@@ -12,10 +12,17 @@
     "port": 8701
   },
   "contracts": {
-    "KittyItems": "./cadence/contracts/KittyItems.cdc",
+    "KittyItems": {
+      "source": "./cadence/contracts/KittyItems.cdc",
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
+        "testnet": "0x1e66c93eb4679497"
+      }
+    },
     "NFTStorefrontV2": {
       "source": "./cadence/contracts/NFTStorefrontV2.cdc",
       "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
         "testnet": "0x2d55b98eb200daef"
       }
     },
@@ -29,6 +36,7 @@
     "MetadataViews": {
       "source": "./cadence/contracts/MetadataViews.cdc",
       "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
         "testnet": "0x631e88ae7f1d7c20"
       }
     },
@@ -46,7 +54,13 @@
         "testnet": "0x7e60df042a9c0868"
       }
     },
-    "FlowTokenFictitious": "./cadence/contracts/FlowTokenFictitious.cdc"
+    "FlowTokenFictitious": {
+      "source": "./cadence/contracts/FlowTokenFictitious.cdc",
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
+        "testnet": "0x1e66c93eb4679497"
+      }
+    }
   },
   "networks": {
     "emulator": "127.0.0.1:3569",

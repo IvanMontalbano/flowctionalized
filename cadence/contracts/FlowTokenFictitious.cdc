@@ -1,5 +1,5 @@
 import FungibleToken from "./FungibleToken.cdc"
-import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
+import NonFungibleToken from "./NonFungibleToken.cdc"
 import KittyItems from "./KittyItems.cdc"
 
 pub contract FlowTokenFictitious: FungibleToken {

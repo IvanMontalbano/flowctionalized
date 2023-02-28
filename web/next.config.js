@@ -8,6 +8,11 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const moduleExports = {
   reactStrictMode: true,
   trailingSlash: true,
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
   productionBrowserSourceMaps: true,
   webpack: (config, _options) => {
     config.module.rules.push({

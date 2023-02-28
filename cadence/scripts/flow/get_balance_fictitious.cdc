@@ -3,7 +3,7 @@
 // Parameters:
 // - address: The address of the account holding the FLOW Fictitious vault.
 
-import FungibleToken from "../../contracts/FungibleToken.cdc"
+import FungibleToken from "../../contracts/NonFungibleToken.cdc"
 import FlowTokenFictitious from "../../contracts/FlowTokenFictitious.cdc"
 
 pub fun main(address: Address): UFix64 {
