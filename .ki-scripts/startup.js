@@ -67,6 +67,13 @@ function initializeKittyItems(network) {
   }`;
 }
 
+function initializeFlowTokenFictitious(network) {
+  if (!network) return envErr();
+  return `flow transactions send -o json --network=${network} --signer ${network}-account ./cadence/transactions/flowTokenFictitious/setup_account.cdc -f flow.json ${
+    network !== "emulator" ? `-f flow.${network}.json` : ""
+  }`;
+}
+
 //////////////////////////////////////////////////////////////////
 // ------------------- HELPER FUNCTIONS -----------------------
 //////////////////////////////////////////////////////////////////
@@ -350,6 +357,16 @@ pm2.connect(false, async function (err) {
       throw new Error(err2);
     }
 
+    spinner.info(`Initializing Flow Token Fictitious`);
+    const { stderr: err4 } = await exec(
+      initializeFlowTokenFictitious(process.env.CHAIN_ENV),
+      { cwd: process.cwd() }
+    );
+
+    if (err2) {
+      throw new Error(err2);
+    }
+
     // -------------- Initialize NFTStorefrontV2 --------------------------
 
     spinner.info(`Initializing NFTStorefront`);
@@ -372,6 +389,11 @@ pm2.connect(false, async function (err) {
     spinner.info(
       `${chalk.cyanBright(
         "./cadence/transactions/kittyItems/setup_account.cdc"
+      )} was executed successfully.${"\n"}`
+    );
+    spinner.info(
+      `${chalk.cyanBright(
+        "./cadence/transactions/flowTokenFictitious/setup_account.cdc"
       )} was executed successfully.${"\n"}`
     );
   }

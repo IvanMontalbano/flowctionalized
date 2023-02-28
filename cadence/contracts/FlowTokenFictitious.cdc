@@ -20,7 +20,7 @@ pub contract FlowTokenFictitious: FungibleToken {
     pub let TokenMinterStoragePath: StoragePath
 
     // Dictionary to keep track of tokens and their NFT of origin
-    pub var fractionsBalance: @{UInt64: Vault}
+    pub var fractionsBalance: {UInt64: UFix64}
 
     // Event that is emitted when the contract is created
     pub event TokensInitialized(initialSupply: UFix64)
@@ -149,12 +149,15 @@ pub contract FlowTokenFictitious: FungibleToken {
                 amount > UFix64(0): "Amount minted must be greater than zero"
                 amount <= self.allowedAmount: "Amount minted must be less than the allowed amount"
                 nft != nil: "NFT must exist"
+                //nft.isInstance(KittyItems.getType()): "NFT must be a KittyItem"
                 recipientRef != nil: "Valid capability to user's vault who want to fractionalize a NFT"
             }
+            let nftId: UInt64 = nft.id
+            let token <- nft as! @KittyItems.NFT
             let receiver = getAccount(FlowTokenFictitious.account.address)
 
             let collectionCapability = receiver.getCapability(KittyItems.CollectionPublicPath)!.borrow<&{NonFungibleToken.CollectionPublic}>() ?? panic("[Collection] Could not borrow a receiver reference to the colleciton")
-            collectionCapability.deposit(token: <- nft);
+            collectionCapability.deposit(token: <- token);
 
             FlowTokenFictitious.totalSupply = FlowTokenFictitious.totalSupply + amount
             self.allowedAmount = self.allowedAmount - amount
@@ -162,6 +165,7 @@ pub contract FlowTokenFictitious: FungibleToken {
             
             //let recipientRef = recipientTokens.borrow() ?? panic("[Vault] Could not borrow a receiver reference to the vault")
             recipientRef.deposit(from: <-create Vault(balance: amount))
+            FlowTokenFictitious.fractionsBalance[nftId] = amount
             //self.account.save(<-nft, to: /storage/kittyItemsCollectionV14/id)
             /*FlowTokenFictitious.totalSupply = FlowTokenFictitious.totalSupply + amount
             self.allowedAmount = self.allowedAmount - amount
@@ -197,7 +201,7 @@ pub contract FlowTokenFictitious: FungibleToken {
 
     init() {
         self.totalSupply = 0.0
-        self.fractionsBalance <- {}
+        self.fractionsBalance = {}
 
         self.TokenStoragePath = /storage/flowTokenFictitiousVault
         self.TokenPublicReceiverPath = /public/flowTokenFictitiousReceiver
